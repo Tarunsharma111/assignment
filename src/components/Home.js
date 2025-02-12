@@ -5,6 +5,7 @@ const Home = (props) => {
   const [filteredJobs, setFilteredJobs] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(true); // Loading state to manage data fetching
   const jobsPerPage = 5;
 
   useEffect(() => {
@@ -14,6 +15,7 @@ const Home = (props) => {
       .then((data) => {
         setJobs(data);
         setFilteredJobs(data);
+        setLoading(false); // Set loading to false after data is fetched
       });
   }, []);
 
@@ -53,7 +55,7 @@ const Home = (props) => {
       </h1>
 
       {/* Search Section */}
-      <div className="row mb-4 ">
+      <div className="row mb-4">
         <div className="col-md-6 d-flex">
           <input
             type="text"
@@ -84,7 +86,10 @@ const Home = (props) => {
         </div>
       </div>
 
-      {currentJobs.length === 0 ? (
+      {/* Display loading message while fetching */}
+      {loading ? (
+        <h2>Loading...</h2>
+      ) : currentJobs.length === 0 ? (
         <h2 style={{ justifyContent: "center", alignItems: "center" }}>
           Match Not Found
         </h2>
@@ -108,9 +113,7 @@ const Home = (props) => {
               {currentJobs.map((job, index) => (
                 <tr
                   key={index}
-                  className={
-                    props.mode === "light" ? "table-light" : "table-dark"
-                  }
+                  className={props.mode === "light" ? "table-light" : "table-dark"}
                 >
                   <td>{index + 1}</td>
                   <td>{job.job_category}</td>
@@ -138,9 +141,7 @@ const Home = (props) => {
         </button>
         <button
           className="btn btn-secondary"
-          disabled={
-            currentPage === Math.ceil(filteredJobs.length / jobsPerPage)
-          }
+          disabled={currentPage === Math.ceil(filteredJobs.length / jobsPerPage)}
           onClick={() => paginate(currentPage + 1)}
         >
           Next
