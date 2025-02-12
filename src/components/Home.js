@@ -88,9 +88,9 @@ const Home = (props) => {
 
       {/* Display loading message while fetching */}
       {loading ? (
-        <h2>Loading...</h2>
+        <h2 >Loading...</h2>
       ) : currentJobs.length === 0 ? (
-        <h2 style={{ justifyContent: "center", alignItems: "center" }}>
+        <h2 style={{ justifyContent: "center", alignItems: "center",color: props.mode === "dark" ? "white" : "black" }}>
           Match Not Found
         </h2>
       ) : (
